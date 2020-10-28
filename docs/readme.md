@@ -44,6 +44,17 @@ WHERE
   beds.fips = cases.fips AND last_update = most_recent
 GROUP BY cases.fips, confirmed, growth_count, admin2, province_state
 ORDER BY growth_count desc
+
+--Testing and deaths
+SELECT * FROM "covid-19"."world_cases_deaths_testing" order by "date" desc limit 10;
+
+SELECT * FROM "covid-19"."nytimes_counties" order by "date" desc limit 10;
+
+-- Testing
+SELECT * FROM "covid-19"."covid_testing_states_daily" order by "date" desc limit 10;
+
+SELECT * FROM "covid-19"."covid_testing_us_daily"  order by "date" desc limit 10;
+
 ```
 
 # References
