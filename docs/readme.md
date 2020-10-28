@@ -37,7 +37,7 @@ FROM
       first_value(last_update) over (partition by fips order by last_update desc) as most_recent,
       last_update
     FROM  
-      "covid-19"."enigma_jhu" 
+      'covid-19'.'enigma_jhu' 
     WHERE 
       from_iso8601_timestamp(last_update) > now() - interval '7' day AND country_region = 'US') cases
 WHERE 
@@ -48,3 +48,7 @@ ORDER BY growth_count desc
 
 # References
 https://aws.amazon.com/blogs/big-data/a-public-data-lake-for-analysis-of-covid-19-data/
+https://docs.aws.amazon.com/athena/latest/ug/code-samples.html
+https://aws.amazon.com/blogs/apn/using-athena-express-to-simplify-sql-queries-on-amazon-athena/
+https://docs.aws.amazon.com/sdk-for-net/v3/developer-guide/net-dg-config-creds.html
+https://docs.aws.amazon.com/sdk-for-java/v1/developer-guide/credentials.html
