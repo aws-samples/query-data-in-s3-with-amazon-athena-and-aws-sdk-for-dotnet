@@ -51,7 +51,24 @@ SELECT * FROM "covid-19"."world_cases_deaths_testing" order by "date" desc limit
 SELECT * FROM "covid-19"."nytimes_counties" order by "date" desc limit 10;
 
 -- Testing
-SELECT * FROM "covid-19"."covid_testing_states_daily" order by "date" desc limit 10;
+SELECT 
+   date,
+   positive,
+   negative,
+   pending,
+   hospitalized,
+   death,
+   total,
+   deathincrease,
+   hospitalizedincrease,
+   negativeincrease,
+   positiveincrease,
+   sta.state AS state_abbreviation,
+   abb.state 
+
+FROM "covid-19"."covid_testing_states_daily" sta
+JOIN "covid-19"."us_state_abbreviations" abb ON sta.state = abb.abbreviation
+limit 500;
 
 SELECT * FROM "covid-19"."covid_testing_us_daily"  order by "date" desc limit 10;
 
@@ -63,3 +80,5 @@ https://docs.aws.amazon.com/athena/latest/ug/code-samples.html
 https://aws.amazon.com/blogs/apn/using-athena-express-to-simplify-sql-queries-on-amazon-athena/
 https://docs.aws.amazon.com/sdk-for-net/v3/developer-guide/net-dg-config-creds.html
 https://docs.aws.amazon.com/sdk-for-java/v1/developer-guide/credentials.html
+
+aws athena start-query-execution --query-string "SELECT * FROM `covid-19`.`covid_testing_us_daily`  order by `date` desc limit 10" --result-configuration OutputLocation=s3://athena-results-netcore-s3bucket-fk6joy3h5yof/athena/results/
