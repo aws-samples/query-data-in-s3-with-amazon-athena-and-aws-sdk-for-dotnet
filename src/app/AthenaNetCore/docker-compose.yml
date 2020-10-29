@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  athenanetcore.webapp:
+    image: athena-netcore-webapp
+    build:
+      context: .
+      dockerfile: AthenaNetCore.WebApp/Dockerfile
