@@ -13,11 +13,11 @@ using AthenaNetCore.BusinessLogic.Entities;
 
 namespace AthenaNetCore.BusinessLogic.Repositories
 {
-    public class HospitalRepository : BaseRepository
+    public class HospitalRepository : BaseRepository, IHospitalRepository
     {
 
         public async Task<IEnumerable<HospitalBeds>> ListHospitalsBedsAsync()
-        {   
+        {
             return await AmazonAthenaClient.QueryAsync<HospitalBeds>("SELECT * FROM  \"covid-19\".\"hospital_beds\" LIMIT 1000;");
         }
 
