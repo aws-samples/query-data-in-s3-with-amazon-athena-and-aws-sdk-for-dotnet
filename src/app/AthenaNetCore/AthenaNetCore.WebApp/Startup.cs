@@ -1,3 +1,4 @@
+using AthenaNetCore.BusinessLogic.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
@@ -27,6 +28,9 @@ namespace AthenaNetCore.WebApp
             {
                 configuration.RootPath = "ClientApp/build";
             });
+
+            services.AddScoped<ICovidTestingRepository, CovidTestingRepository>();
+            services.AddScoped<IHospitalRepository, HospitalRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
