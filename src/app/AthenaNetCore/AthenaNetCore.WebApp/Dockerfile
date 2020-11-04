@@ -3,17 +3,18 @@
 FROM mcr.microsoft.com/dotnet/core/aspnet:3.1-buster-slim AS base
 WORKDIR /app
 EXPOSE 80
-RUN curl -sL https://deb.nodesource.com/setup_10.x |  bash -
+RUN curl -sL https://deb.nodesource.com/setup_14.x |  bash -
 RUN apt-get install -y nodejs
 
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster AS build
-RUN curl -sL https://deb.nodesource.com/setup_10.x |  bash -
+RUN curl -sL https://deb.nodesource.com/setup_14.x |  bash -
 RUN apt-get install -y nodejs
 
 WORKDIR /src
 COPY ["AthenaNetCore.WebApp/AthenaNetCore.WebApp.csproj", "AthenaNetCore.WebApp/"]
 RUN dotnet restore "AthenaNetCore.WebApp/AthenaNetCore.WebApp.csproj"
 COPY . .
+
 WORKDIR "/src/AthenaNetCore.WebApp"
 RUN dotnet build "AthenaNetCore.WebApp.csproj" -c Release -o /app/build
 

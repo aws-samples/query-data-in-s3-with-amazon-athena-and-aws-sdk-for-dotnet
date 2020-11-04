@@ -4,9 +4,5 @@ services:
   athenanetcore.webapp:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - AWS_DEFAULT_REGION=us-west-2
-      - AWS_ACCESS_KEY_ID=AKIAZPP2S73QI55S76BH
-      - AWS_SECRET_ACCESS_KEY=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
-      - "S3_RESULT=s3://athena-results-netcore-s3bucket-fk6joy3h5yof/athena/results/"
     ports:
       - "8089:80"

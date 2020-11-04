@@ -264,3 +264,5 @@ paket-files/
 # **/.kube/**
 # .mfractor
 .DS_Store
+# Avoid commit AWS Cred
+**/*.env

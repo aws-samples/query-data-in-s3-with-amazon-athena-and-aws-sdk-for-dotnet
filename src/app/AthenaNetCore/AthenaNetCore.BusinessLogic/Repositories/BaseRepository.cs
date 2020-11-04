@@ -1,12 +1,14 @@
 ﻿using Amazon;
 using Amazon.Athena;
+using AthenaNetCore.BusinessLogic.Extentions;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace AthenaNetCore.BusinessLogic.Repositories
 {
-    public abstract class BaseRepository : IDisposable
+    public abstract class BaseRepository : IBaseRepository
     {
         public BaseRepository()
         {
@@ -34,6 +36,11 @@ namespace AthenaNetCore.BusinessLogic.Repositories
             {
                 AmazonAthenaClient.Dispose();
             }
+        }
+
+        public Task<bool> IsTheQueryStillRunning(string queryId)
+        {
+            return AmazonAthenaClient.IsTheQueryStillRunning(queryId);
         }
     }
 }
