@@ -38,7 +38,7 @@ namespace AthenaNetCore.BusinessLogic.Repositories
                                 ORDER BY sta.date DESC, sta.state ASC 
                                 LIMIT 500";
 
-            return await base.AmazonAthenaClient.QueryAsync<CovidTestingStatesDaily>(queryString);
+            return await AmazonAthenaClient.QueryAsync<CovidTestingStatesDaily>(queryString);
         }
 
         /// <summary>
@@ -46,14 +46,14 @@ namespace AthenaNetCore.BusinessLogic.Repositories
         /// </summary>
         /// <param name="date">date to filter</param>
         /// <returns>List of COVID-19' numbers of testing, positive, negative, and death </returns>
-        public async Task<IEnumerable<CovidTestingStatesDaily>> ProgressByDateAsync(DateTime date)
+        public Task<string> ProgressAsync(DateTime date)
         {
             // '{date:yyyyMMdd}' is a simplified code of date.ToString("yyyyMMdd")
             var queryString = $@"{baseQuery} 
                     WHERE sta.date ='{date:yyyyMMdd}'
-                    ORDER sta.state";
+                    ORDER BY sta.state";
 
-            return await base.AmazonAthenaClient.QueryAsync<CovidTestingStatesDaily>(queryString);
+            return AmazonAthenaClient.QueryAndGoAsync(queryString);
         }
 
 
@@ -62,19 +62,23 @@ namespace AthenaNetCore.BusinessLogic.Repositories
         /// </summary>
         /// <param name="stateAbbreviation">2 diggits State Abbreviation </param>
         /// <returns>List of COVID-19' numbers of testing, positive, negative, and death </returns>
-        public async Task<IEnumerable<CovidTestingStatesDaily>> PorgressByStateAsync(string stateAbbreviation)
+        public Task<string> ProgressAsync(string stateAbbreviation)
         {
-            if (string.IsNullOrWhiteSpace(stateAbbreviation) || stateAbbreviation.Length > 2)
-            {
-                return default;
-            }
+            if (string.IsNullOrWhiteSpace(stateAbbreviation) || stateAbbreviation.Length > 2) return default;
 
             var queryString = $@"{baseQuery}
                     WHERE sta.state ='{stateAbbreviation}'
                     ORDER BY sta.date DESC
                     LIMIT 100";
 
-            return await base.AmazonAthenaClient.QueryAsync<CovidTestingStatesDaily>(queryString);
+            return AmazonAthenaClient.QueryAndGoAsync(queryString);
+        }
+
+        public Task<IEnumerable<CovidTestingStatesDaily>> GetTestingQueryResult(string queryId)
+        {
+            if (string.IsNullOrWhiteSpace(queryId)) return default;
+
+            return AmazonAthenaClient.ProcessQueryResultsAsync<CovidTestingStatesDaily>(queryId);
         }
     }
 }

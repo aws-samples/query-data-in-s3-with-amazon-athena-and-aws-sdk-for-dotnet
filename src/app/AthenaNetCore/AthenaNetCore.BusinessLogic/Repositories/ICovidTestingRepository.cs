@@ -8,14 +8,21 @@ namespace AthenaNetCore.BusinessLogic.Repositories
     /// <summary>
     /// COVID-19 status and testing progress
     /// </summary>
-    public interface ICovidTestingRepository : IDisposable
+    public interface ICovidTestingRepository : IBaseRepository
     {
+        /// <summary>
+        /// Get result of a giving query by ID
+        /// </summary>
+        /// <param name="queryId"></param>
+        /// <returns></returns>
+        Task<IEnumerable<CovidTestingStatesDaily>> GetTestingQueryResult(string queryId);
+
         /// <summary>
         /// Provide last 100 days records of COVID-19 status and testing progress in by State
         /// </summary>
         /// <param name="stateAbbreviation">2 diggits State Abbreviation </param>
         /// <returns>List of COVID-19' numbers of testing, positive, negative, and death </returns>
-        Task<IEnumerable<CovidTestingStatesDaily>> PorgressByStateAsync(string stateAbbreviation);
+        Task<string> ProgressAsync(string stateAbbreviation);
 
         /// <summary>
         /// Provide last 500 records of COVID-19 status and testing progress in USA
@@ -28,6 +35,6 @@ namespace AthenaNetCore.BusinessLogic.Repositories
         /// </summary>
         /// <param name="date">date to filter</param>
         /// <returns>List of COVID-19' numbers of testing, positive, negative, and death </returns>
-        Task<IEnumerable<CovidTestingStatesDaily>> ProgressByDateAsync(DateTime date);
+        Task<string> ProgressAsync(DateTime date);
     }
 }

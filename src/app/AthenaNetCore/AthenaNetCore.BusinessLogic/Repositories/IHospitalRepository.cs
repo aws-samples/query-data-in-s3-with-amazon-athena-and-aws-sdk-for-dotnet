@@ -5,8 +5,10 @@ using System.Threading.Tasks;
 
 namespace AthenaNetCore.BusinessLogic.Repositories
 {
-    public interface IHospitalRepository : IDisposable
+    public interface IHospitalRepository : IBaseRepository
     {
-        Task<IEnumerable<HospitalBeds>> ListHospitalsBedsAsync();
+        Task<string> HospitalsBedsAsync();
+        Task<IEnumerable<HospitalBeds>> HospitalsBedsAsync(string queryId);
+        Task<IEnumerable<HospitalBeds>> HospitalsBedsWaitResultAsync();
     }
 }

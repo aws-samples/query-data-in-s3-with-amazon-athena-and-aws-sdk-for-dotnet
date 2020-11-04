@@ -16,10 +16,10 @@ namespace AthenaNetCore.BusinessLogic.Repositories.Tests
             IEnumerable<HospitalBeds> result;
             using (var repo = new HospitalRepository())
             {
-                result = await repo.ListHospitalsBedsAsync();
+                result = await repo.HospitalsBedsWaitResultAsync();
             }
 
-            Assert.Equal(999, result.Count());
+            Assert.Equal(500, result.Count());
         }
     }
 }

@@ -16,11 +16,28 @@ namespace AthenaNetCore.BusinessLogic.Repositories
     public class HospitalRepository : BaseRepository, IHospitalRepository
     {
 
-        public async Task<IEnumerable<HospitalBeds>> ListHospitalsBedsAsync()
+        private const string QUERY_HOSPITALS_MOST_AFFECTED = "SELECT * FROM  \"covid-19\".\"hospital_beds\" ORDER BY potential_increase_in_bed_capac LIMIT 500;";
+
+        public Task<IEnumerable<HospitalBeds>> HospitalsBedsWaitResultAsync()
         {
-            return await AmazonAthenaClient.QueryAsync<HospitalBeds>("SELECT * FROM  \"covid-19\".\"hospital_beds\" LIMIT 1000;");
+            return AmazonAthenaClient.QueryAsync<HospitalBeds>(QUERY_HOSPITALS_MOST_AFFECTED);
         }
 
+        public Task<string> HospitalsBedsAsync()
+        {
+            return AmazonAthenaClient.QueryAndGoAsync(QUERY_HOSPITALS_MOST_AFFECTED);
+        }
+
+
+        public Task<IEnumerable<HospitalBeds>> HospitalsBedsAsync(string queryId)
+        {
+            if (string.IsNullOrWhiteSpace(queryId))
+            {
+                return default;
+            }
+
+            return AmazonAthenaClient.ProcessQueryResultsAsync<HospitalBeds>(queryId);
+        }
     }
 }
 

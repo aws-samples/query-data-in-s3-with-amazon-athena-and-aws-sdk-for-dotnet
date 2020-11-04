@@ -17,6 +17,7 @@ export class Hospitals extends Component {
                 <thead>
                     <tr>
                         <th>Name</th>
+                        <th>State</th>
                         <th>Type</th>
                         <th>ZipCode</th>
                         <th>Licenced Beds</th>
@@ -28,6 +29,7 @@ export class Hospitals extends Component {
                     {hospitals.map(hospitalItem =>
                         <tr key={hospitalItem.name}>
                             <td>{hospitalItem.name}</td>
+                            <td>{hospitalItem.stateName}</td>
                             <td>{hospitalItem.hospitalType}</td>
                             <td>{hospitalItem.hqZipCode}</td>
                             <td>{hospitalItem.licencedBeds}</td>
@@ -48,7 +50,7 @@ export class Hospitals extends Component {
         return (
             <div>
                 <h1 id="tabelLabel" >Hospitals Beds avaliability</h1>
-                <p>This component demonstrates fetching COVID-19 data from the server that uses Amazon Athena to run SQL Standard query on S3 files from a Data Lake account</p>
+                <p>This component demonstrates fetching COVID-19 data from the server that uses Amazon Athena to run SQL Standard query on S3 files from a Data Lake account. This Request run Athena Query and Wait for Results</p>
                 {contents}
             </div>
         );
