@@ -5,13 +5,13 @@ To showcase a more realistic use-case, it includes a WebApp UI developed using [
 
 Those ReatJs Components call .NET Core API that runs Amazon Athena Query, get QueryExecutionId, check the execution status, and list results. Each menu presents different views.
 
-**Menu option Testing By Date**: Shows a filter by Date that present a table with the following data: Date, State, Positive, Negative, Pending, Hospitalized, Death, Positive Increase
+**Menu option _Testing By Date_**: Shows a filter by Date that present a table with the following data: Date, State, Positive, Negative, Pending, Hospitalized, Death, Positive Increase
 
-**Menu option Testing By State**: Shows a filter by State that present a table with the following data: Date, State, Positive, Negative, Pending, Hospitalized, Death Positive Increase
+**Menu option _Testing By State_**: Shows a filter by State that present a table with the following data: Date, State, Positive, Negative, Pending, Hospitalized, Death Positive Increase
 
-**Menu option Hospitals (Run&Go)**: Run a request to the API server, get 200 with the Query ID, check the status of the execution; when the execution it's completed, it presents a table with the following data: Name, State, Type, ZipCode, Licenced Beds, Staffed Beds, Potential Increase in Beds
+**Menu option _Hospitals (Run&Go)_**: Run a request to the API server, get 200 with the Query ID, check the status of the execution; when the execution it's completed, it presents a table with the following data: Name, State, Type, ZipCode, Licenced Beds, Staffed Beds, Potential Increase in Beds
 
-**Menu option *Hospitals (Run&Go)**: Run request to the API server, wait for the result and present a table with the following data: Name, State, Type, Zip Code, Licenced Beds, Staffed Beds, Potential Increase in Beds
+**Menu option _Hospitals (Run&Go)_**: Run request to the API server, wait for the result and present a table with the following data: Name, State, Type, Zip Code, Licenced Beds, Staffed Beds, Potential Increase in Beds
 
 # Steps
 
