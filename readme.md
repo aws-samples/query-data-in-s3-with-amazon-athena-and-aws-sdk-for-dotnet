@@ -193,18 +193,20 @@ docker-compose -f ./docker-compose.yml build
 docker-compose -f ./docker-compose.yml up
 ```
 
-5) Test .NET APP via URL http://localhost:8089/
+5) Test .NET APP via URL <http://localhost:8089/>
 
 # References
 
-https://aws.amazon.com/blogs/big-data/a-public-data-lake-for-analysis-of-covid-19-data/ 
+<https://aws.amazon.com/blogs/big-data/a-public-data-lake-for-analysis-of-covid-19-data/> 
 
-https://docs.aws.amazon.com/athena/latest/ug/code-samples.html
+<https://docs.aws.amazon.com/athena/latest/ug/code-samples.html>
 
-https://aws.amazon.com/blogs/apn/using-athena-express-to-simplify-sql-queries-on-amazon-athena/
+<https://aws.amazon.com/blogs/apn/using-athena-express-to-simplify-sql-queries-on-amazon-athena/>
 
-https://docs.aws.amazon.com/sdk-for-net/v3/developer-guide/net-dg-config-creds.html
+<https://docs.aws.amazon.com/sdk-for-net/v3/developer-guide/net-dg-config-creds.html>
 
-https://docs.aws.amazon.com/sdk-for-java/v1/developer-guide/credentials.html
+<https://docs.aws.amazon.com/sdk-for-java/v1/developer-guide/credentials.html>
 
-https://docs.aws.amazon.com/sdk-for-net/latest/developer-guide/creds-assign.html
+<https://docs.aws.amazon.com/sdk-for-net/latest/developer-guide/creds-assign.html>
+
+<https://github.com/awsdocs/aws-cloud9-user-guide/blob/master/LICENSE-SAMPLECODE>
