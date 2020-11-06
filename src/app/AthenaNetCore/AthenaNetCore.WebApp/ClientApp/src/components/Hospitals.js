@@ -20,9 +20,9 @@ export class Hospitals extends Component {
                         <th>State</th>
                         <th>Type</th>
                         <th>ZipCode</th>
-                        <th>Licenced Beds</th>
-                        <th>Stafed Beds</th>
-                        <th>Potential Incerease in Beds</th>
+                        <th>Licensed Beds</th>
+                        <th>Staffed Beds</th>
+                        <th>Potential Increase in Beds</th>
                     </tr>
                 </thead>
                 <tbody>

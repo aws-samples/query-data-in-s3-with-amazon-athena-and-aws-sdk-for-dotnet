@@ -1,8 +1,24 @@
 # Introduction
 
+This Project provides a sample implementation that will show how to leverage [Amazon Athena](https://aws.amazon.com/athena/) from .NET Application using [AWS SDK for .NET](https://docs.aws.amazon.com/sdk-for-net/v3/developer-guide/welcome.html) to run standard SQL to analyze a large amount of data in [Amazon S3](https://aws.amazon.com/s3/).
+To showcase a more realistic use-case, it includes a WebApp UI developed using [ReactJs](https://reactjs.org/). this WebApp contains components to demonstrate fetching COVID-19 data from API Server that uses AWS SDK for .NET to connect to Amazon Athena and run SQL Standard query from datasets on Amazon S3 files from a Data Lake account. This Data Lake account is an open data available on [Registry of Open Data on AWS](https://registry.opendata.aws/); here's the link to the Data Lake <https://registry.opendata.aws/aws-covid19-lake/>.
+
+Those ReatJs Components call .NET Core API that runs Amazon Athena Query, get QueryExecutionId, check the execution status, and list results. Each menu presents different views.
+
+**Menu option Testing By Date**: Shows a filter by Date that present a table with the following data: Date, State, Positive, Negative, Pending, Hospitalized, Death, Positive Increase
+
+**Menu option Testing By State**: Shows a filter by State that present a table with the following data: Date, State, Positive, Negative, Pending, Hospitalized, Death Positive Increase
+
+**Menu option Hospitals (Run&Go)**: Run a request to the API server, get 200 with the Query ID, check the status of the execution; when the execution it's completed, it presents a table with the following data: Name, State, Type, ZipCode, Licenced Beds, Staffed Beds, Potential Increase in Beds
+
+**Menu option *Hospitals (Run&Go)**: Run request to the API server, wait for the result and present a table with the following data: Name, State, Type, Zip Code, Licenced Beds, Staffed Beds, Potential Increase in Beds
+
 # Steps
 
+To run this project follow the instructions bellow:
+
 ## 1) Deploy Glue Catalog & Athena Database/Tables
+
 ```bash
 #1) Deploy
 aws cloudformation create-stack --stack-name covid-lake-stack --template-url https://covid19-lake.s3.us-east-2.amazonaws.com/cfn/CovidLakeStack.template.json --region us-west-2
@@ -10,7 +26,9 @@ aws cloudformation create-stack --stack-name covid-lake-stack --template-url htt
 #2) Check deployment Status
 aws cloudformation  describe-stacks --stack-name covid-lake-stack --region us-west-2
 ```
+
 Below the result of status check, wait for **"StackStatus": "CREATE_COMPLETE"**
+
 ```json
 {
     "Stacks": [
@@ -33,6 +51,7 @@ Below the result of status check, wait for **"StackStatus": "CREATE_COMPLETE"**
 ```
 
 ## 2) Create S3 bucket for Athena Result
+
 ```bash
 #1) Deploy S3 Bucket
 aws cloudformation create-stack --stack-name athena-results-netcore --template-body file://s3-athena-result.template.yaml --region us-west-2
@@ -40,7 +59,9 @@ aws cloudformation create-stack --stack-name athena-results-netcore --template-b
 #2) Check deployment Status
 aws cloudformation  describe-stacks --stack-name athena-results-netcore --region us-west-2
 ```
+
 Below the result of status check, wait for **"StackStatus": "CREATE_COMPLETE"** and copy output Bucket Name **"OutputValue": "s3://athena-results-netcore-s3bucket-xxxxxxxxxxxx/athena/results/",** you will need this to run your code
+
 ```json
 {
     "Stacks": [
@@ -74,20 +95,22 @@ Below the result of status check, wait for **"StackStatus": "CREATE_COMPLETE"** 
 ```
 
 ## 3) COVID-19 Analisys (optional)
+
 Some SQL Query you can try by your own using Amazon Athena UI
+
 ```sql
-SELECT 
-  cases.fips, 
-  admin2 as county, 
-  province_state, 
+SELECT
+  cases.fips,
+  admin2 as county,
+  province_state,
   confirmed,
-  growth_count, 
-  sum(num_licensed_beds) as num_licensed_beds, 
-  sum(num_staffed_beds) as num_staffed_beds, 
+  growth_count,
+  sum(num_licensed_beds) as num_licensed_beds,
+  sum(num_staffed_beds) as num_staffed_beds,
   sum(num_icu_beds) as num_icu_beds
 FROM 
-  "covid-19"."hospital_beds" beds, 
-  ( SELECT 
+  "covid-19"."hospital_beds" beds,
+  ( SELECT
       fips, 
       admin2, 
       province_state, 
@@ -133,34 +156,47 @@ SELECT * FROM "covid-19"."covid_testing_us_daily"  order by "date" desc limit 10
 
 ```
 
-# 4) Build & Run .NET Web Application
+## 4) Build & Run .NET Web Application
+
 1) Go to the app root dir
+
 ```bash
 cd ./src/app/AthenaNetCore/
 ```
+
 2) Create AWS Credential file, **_for security precaution the file extension *.env is added to .gitignore to avoid accidental commit_**
+
 ```bash
 vi aws-credentials-do-not-commit.env #You can use any text editor eg: vscode -> code aws-credentials-do-not-commit.env
 ```
+
 Below example of env file content, replace the XXXX... with your real AWS Credential, and add to S3_RESULT the output result you got from steep 2)
+
 ```ini
 AWS_DEFAULT_REGION=us-west-2
 AWS_ACCESS_KEY_ID=XXXXXXXXXXXXXXXXXXXX
 AWS_SECRET_ACCESS_KEY=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 AWS_SESSION_TOKEN=XXXXX #(Optional, used only in case of temporary token, you'll need to remove this comment on the .env file)
 S3_RESULT=s3://athena-results-netcore-s3bucket-xxxxxxxxxxxx/athena/results/
+
 ```
-3) Build .NET APP using docker-compose 
+
+3) Build .NET APP using docker-compose
+
 ```bash
 docker-compose -f ./docker-compose.yml build
 ```
+
 4) Run .NET APP docker-compose 
+
 ```bash
 docker-compose -f ./docker-compose.yml up
 ```
+
 5) Test .NET APP via URL http://localhost:8089/
 
 # References
+
 https://aws.amazon.com/blogs/big-data/a-public-data-lake-for-analysis-of-covid-19-data/ 
 
 https://docs.aws.amazon.com/athena/latest/ug/code-samples.html
