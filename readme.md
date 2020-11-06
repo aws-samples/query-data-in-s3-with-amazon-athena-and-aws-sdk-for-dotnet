@@ -1,6 +1,6 @@
 # Introduction
 
-This Project provides a sample implementation that will show how to leverage [Amazon Athena](https://aws.amazon.com/athena/) from .NET Application using [AWS SDK for .NET](https://docs.aws.amazon.com/sdk-for-net/v3/developer-guide/welcome.html) to run standard SQL to analyze a large amount of data in [Amazon S3](https://aws.amazon.com/s3/).
+This Project provides a sample implementation that will show how to leverage [Amazon Athena](https://aws.amazon.com/athena/) from .NET Core Application using [AWS SDK for .NET](https://docs.aws.amazon.com/sdk-for-net/v3/developer-guide/welcome.html) to run standard SQL to analyze a large amount of data in [Amazon S3](https://aws.amazon.com/s3/).
 To showcase a more realistic use-case, it includes a WebApp UI developed using [ReactJs](https://reactjs.org/). this WebApp contains components to demonstrate fetching COVID-19 data from API Server that uses AWS SDK for .NET to connect to Amazon Athena and run SQL Standard query from datasets on Amazon S3 files from a Data Lake account. This Data Lake account is an open data available on [Registry of Open Data on AWS](https://registry.opendata.aws/); here's the link to the Data Lake <https://registry.opendata.aws/aws-covid19-lake/>.
 
 Those ReatJs Components call .NET Core API that runs Amazon Athena Query, get QueryExecutionId, check the execution status, and list results. Each menu presents different views.
