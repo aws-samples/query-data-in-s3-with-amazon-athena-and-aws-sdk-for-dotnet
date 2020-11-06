@@ -17,5 +17,3 @@
 - [ ] Fixes bug
 - [ ] Refactors code
 - [ ] Adds test(s)
-
-### REVIEWERS
