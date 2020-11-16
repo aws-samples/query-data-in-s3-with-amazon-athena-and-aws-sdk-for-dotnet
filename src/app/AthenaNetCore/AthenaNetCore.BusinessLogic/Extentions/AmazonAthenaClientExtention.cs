@@ -30,7 +30,7 @@ namespace AthenaNetCore.BusinessLogic.Extentions
     internal static class AmazonAthenaClientExtention
     {
         private const int SLEEP_AMOUNT_IN_MS = 1000;
-        private static readonly string S3_RESULT = Environment.GetEnvironmentVariable("S3_RESULT") ?? "YOUR_S3_BUCKET_FOR_THE_ATHENA_RESULT";
+        private static readonly string S3_RESULT_BUCKET_NAME = Environment.GetEnvironmentVariable("S3_RESULT_BUCKET_NAME") ?? "YOUR_S3_BUCKET_FOR_THE_ATHENA_RESULT";
 
         /// <summary>
         /// Execute an SQL query using Amazon Athena, wait for the result of the query 
@@ -56,7 +56,7 @@ namespace AthenaNetCore.BusinessLogic.Extentions
                 QueryString = queryString,
                 ResultConfiguration = new ResultConfiguration
                 {
-                    OutputLocation = S3_RESULT
+                    OutputLocation = S3_RESULT_BUCKET_NAME
                 }
             });
 
@@ -79,7 +79,7 @@ namespace AthenaNetCore.BusinessLogic.Extentions
                 QueryString = queryString,
                 ResultConfiguration = new ResultConfiguration
                 {
-                    OutputLocation = S3_RESULT
+                    OutputLocation = S3_RESULT_BUCKET_NAME
                 }
             });
 

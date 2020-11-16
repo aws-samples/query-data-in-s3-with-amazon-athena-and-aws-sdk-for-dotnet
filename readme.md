@@ -177,7 +177,7 @@ AWS_DEFAULT_REGION=us-west-2
 AWS_ACCESS_KEY_ID=XXXXXXXXXXXXXXXXXXXX
 AWS_SECRET_ACCESS_KEY=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 AWS_SESSION_TOKEN=XXXXX #(Optional, used only in case of temporary token, you'll need to remove this comment on the .env file)
-S3_RESULT=s3://athena-results-netcore-s3bucket-xxxxxxxxxxxx/athena/results/
+S3_RESULT_BUCKET_NAME=s3://athena-results-netcore-s3bucket-xxxxxxxxxxxx/athena/results/
 
 ```
 
