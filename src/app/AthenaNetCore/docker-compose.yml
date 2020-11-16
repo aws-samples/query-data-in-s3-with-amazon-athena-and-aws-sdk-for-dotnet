@@ -7,6 +7,6 @@ services:
       context: .
       dockerfile: AthenaNetCore.WebApp/Dockerfile
     ports:
-      - "8089:80"
+      - "80:80"
     env_file:
     - aws-credentials-do-not-commit.env

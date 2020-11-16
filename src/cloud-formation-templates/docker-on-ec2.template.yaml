@@ -1,0 +1,170 @@
+AWSTemplateFormatVersion: '2010-09-09'
+
+Description: Launches Ec2 and other resources to run Docker for Athena Netcore application
+
+Parameters:
+  VpcId:
+    Description: VPC-id to launch the Ec2 in
+    Type: AWS::EC2::VPC::Id
+
+  SubnetId:
+    Description: Subnet-id to launch the Ec2 in
+    Type: AWS::EC2::Subnet::Id
+
+  ImageId:
+    Description: Amzn2 Linux AMI-id
+    Type: AWS::EC2::Image::Id
+    Default: 'ami-0528a5175983e7f28'
+
+  InstanceType:
+    Description: EC2 instance type
+    Type: String
+    Default: 't2.micro'
+
+  SourceCodeBucket:
+    Description: S3 Bucket of App SourceCode Zip archive
+    Type: String
+    AllowedPattern: "^athena-examples-.*"
+
+#  KeyName:
+#    Description: EC2 KeyPair to enable SSH access
+#    Type: String
+#    Default: my-aws-keypair
+
+#  IngressSourecCIDR:
+#    Description: IP CIDR for SSH and HTTP inbound traffic
+#    Type: String
+#    Default: 47.148.54.98/32
+
+Resources:
+  S3Bucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Join
+        - "-"
+        - - "aws-athena-query-results"
+          - !Ref AWS::Region
+          - !Select [0, !Split [-, !Select [2, !Split [/, !Ref AWS::StackId]]]]
+          - !Select [1, !Split [-, !Select [2, !Split [/, !Ref AWS::StackId]]]]
+
+  EC2InstanceRole:
+    Type: AWS::IAM::Role
+    Properties:
+      Description: Instance Profile Role for Athena NetCore App instance
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - ec2.amazonaws.com
+            Action:
+              - sts:AssumeRole
+      Path: /
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/AmazonAthenaFullAccess
+      Policies:
+        - PolicyName: covid19-lake-access
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Effect: Allow
+                Action:
+                  - s3:GetObject
+                Resource:
+                  - "arn:aws:s3:::covid19-lake/*"
+
+  EC2InstanceProfile:
+    Type: AWS::IAM::InstanceProfile
+    Properties:
+      Path: /
+      Roles:
+      - Ref: EC2InstanceRole
+
+  Ec2SecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      VpcId:
+        Ref: VpcId
+      GroupDescription: Security Grp for Athena NetCore App instance
+      SecurityGroupIngress:
+      - IpProtocol: tcp
+        FromPort: 80
+        ToPort: 80
+        CidrIp: '0.0.0.0/0'
+#      - IpProtocol: tcp
+#        FromPort: 22
+#        ToPort: 22
+#        CidrIp:
+#          Ref: IngressSourecCIDR
+
+  Ec2Instance:
+    Type: AWS::EC2::Instance
+    Properties:
+      ImageId:
+        Ref: ImageId
+      InstanceType:
+        Ref: InstanceType
+      NetworkInterfaces: 
+        - AssociatePublicIpAddress: true
+          DeviceIndex: 0
+          GroupSet: 
+            - Ref: Ec2SecurityGroup
+          SubnetId: 
+            Ref: SubnetId
+#      KeyName:
+#        !Ref KeyName
+      IamInstanceProfile:
+        Ref: EC2InstanceProfile
+      Tags:
+      -
+        Key: Name
+        Value: Athena-NetCore
+
+      UserData:
+        Fn::Base64:
+          Fn::Sub: |
+            #!/bin/bash -xe
+
+            # redirect stdout & stderr to a logfile
+            exec > /var/log/athena-netcore-userdata.log
+            exec 2>&1
+
+            yum update -y aws-cfn-bootstrap
+
+            amazon-linux-extras install docker -y
+            service docker start
+
+            curl -sL https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
+            chmod +x /usr/local/bin/docker-compose
+
+            mkdir -p /var/athena-netcore
+            cd /var/athena-netcore
+
+            aws s3 cp s3://${SourceCodeBucket}/app-AthenaNetCore.zip .
+            unzip app-AthenaNetCore.zip
+            cd app/AthenaNetCore
+
+            echo ini > aws-credentials-do-not-commit.env
+            echo AWS_DEFAULT_REGION=${AWS::Region} >> aws-credentials-do-not-commit.env
+            echo S3_RESULT=s3://${S3Bucket}/athena/results/ >> aws-credentials-do-not-commit.env
+
+            /usr/local/bin/docker-compose -f ./docker-compose.yml build
+            /usr/local/bin/docker-compose -f ./docker-compose.yml up --detach
+
+            # send cfn-signal back to Cfn stack
+            /opt/aws/bin/cfn-signal -e $? --stack ${AWS::StackName} --resource Ec2Instance --region ${AWS::Region}
+
+    CreationPolicy:
+      ResourceSignal:
+        Timeout: PT15M
+
+Outputs:
+  ResultsBucket:
+    Value: !Sub "s3://${S3Bucket}/athena/results/"
+    Description: URI of the Amazon S3 bucket to store Athena query results
+
+  NetCoreAppEndpoint:
+    Value: !Sub "http://${Ec2Instance.PublicDnsName}"
+    Description: HTTP Endpoint URL of Athena NetCore app
+

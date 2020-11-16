@@ -195,6 +195,35 @@ docker-compose -f ./docker-compose.yml up
 
 5) Test .NET APP via URL <http://localhost:8089/>
 
+# EC2 Deployment
+
+Follow these steps to deplpy the App with Docker container running on an EC2 instance
+
+## 1) Install AWS SAM cli
+<https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-cli-install.html>
+
+## 2) Update the `VPC_ID` and `SUBNET_ID` parameter values in `src/Makefile`
+please note the SUBNET_ID needs to be Public subnet
+```
+# Input parameters
+AWS_REGION = us-west-2
+VPC_ID     = vpc-xxxxxxxxxxxxxxxxx
+SUBNET_ID  = subnet-xxxxxxxxxxxxxxxxx
+```
+
+## 3) Build and deploy using AWS SAM cli
+```bash
+cd src
+make deploy
+```
+
+After successful CloudFormation Stack deplloyment, an HTTP Endpoint URL will be printed in the Output section
+```
+Key                 NetCoreAppEndpoint
+Description         HTTP Endpoint URL of Athena NetCore app
+Value               http://ec2-54-218-121-219.us-west-2.compute.amazonaws.com
+```
+
 # References
 
 <https://aws.amazon.com/blogs/big-data/a-public-data-lake-for-analysis-of-covid-19-data/> 
