@@ -26,16 +26,6 @@ Parameters:
     Type: String
     AllowedPattern: "^athena-examples-.*"
 
-#  KeyName:
-#    Description: EC2 KeyPair to enable SSH access
-#    Type: String
-#    Default: my-aws-keypair
-
-#  IngressSourecCIDR:
-#    Description: IP CIDR for SSH and HTTP inbound traffic
-#    Type: String
-#    Default: 47.148.54.98/32
-
 Resources:
   S3Bucket:
     Type: AWS::S3::Bucket
@@ -92,11 +82,6 @@ Resources:
         FromPort: 80
         ToPort: 80
         CidrIp: '0.0.0.0/0'
-#      - IpProtocol: tcp
-#        FromPort: 22
-#        ToPort: 22
-#        CidrIp:
-#          Ref: IngressSourecCIDR
 
   Ec2Instance:
     Type: AWS::EC2::Instance
@@ -112,8 +97,6 @@ Resources:
             - Ref: Ec2SecurityGroup
           SubnetId: 
             Ref: SubnetId
-#      KeyName:
-#        !Ref KeyName
       IamInstanceProfile:
         Ref: EC2InstanceProfile
       Tags:
@@ -167,4 +150,3 @@ Outputs:
   NetCoreAppEndpoint:
     Value: !Sub "http://${Ec2Instance.PublicDnsName}"
     Description: HTTP Endpoint URL of Athena NetCore app
-

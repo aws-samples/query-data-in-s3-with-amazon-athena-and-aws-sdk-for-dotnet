@@ -203,7 +203,7 @@ Follow these steps to deplpy the App with Docker container running on an EC2 ins
 <https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-cli-install.html>
 
 ## 2) Update the `VPC_ID` and `SUBNET_ID` parameter values in `src/Makefile`
-please note the SUBNET_ID needs to be Public subnet
+Please note the SUBNET_ID needs to be a Public subnet for HTTP connectivity
 ```
 # Input parameters
 AWS_REGION = us-west-2
@@ -211,13 +211,13 @@ VPC_ID     = vpc-xxxxxxxxxxxxxxxxx
 SUBNET_ID  = subnet-xxxxxxxxxxxxxxxxx
 ```
 
-## 3) Build and deploy using AWS SAM cli
+## 3) Deploy using AWS SAM cli
 ```bash
 cd src
 make deploy
 ```
 
-After successful CloudFormation Stack deplloyment, an HTTP Endpoint URL will be printed in the Output section
+After successful CloudFormation Stack deployment, an HTTP Endpoint URL will be printed in the Output section
 ```
 Key                 NetCoreAppEndpoint
 Description         HTTP Endpoint URL of Athena NetCore app
