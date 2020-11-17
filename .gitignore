@@ -6,7 +6,6 @@
 *.user
 *.userosscache
 *.sln.docstates
-.vscode/
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
@@ -18,17 +17,16 @@
 [Rr]eleases/
 x64/
 x86/
+build/
 bld/
-[Bb]in/
-[Oo]bj/
-[Ll]og/
+bin/
+Bin/
+obj/
+Obj/
 
 # Visual Studio 2015 cache/options directory
 .vs/
-# Uncomment if you have tasks that create the project's static files in wwwroot
-**/wwwroot/lib/
-!/wwwroot/lib/signalr
-!/wwwroot/lib/toastr
+/wwwroot/dist/
 
 # MSTest test Results
 [Tt]est[Rr]esult*/
@@ -42,10 +40,6 @@ TestResult.xml
 [Dd]ebugPS/
 [Rr]eleasePS/
 dlldata.c
-
-# DNX
-project.lock.json
-artifacts/
 
 *_i.c
 *_p.c
@@ -83,8 +77,6 @@ ipch/
 *.opensdf
 *.sdf
 *.cachefile
-*.VC.db
-*.VC.VC.opendb
 
 # Visual Studio profiler
 *.psess
@@ -148,11 +140,6 @@ publish/
 *.pubxml
 *.publishproj
 
-# Microsoft Azure Web App publish settings. Comment the next line if you want to
-# checkin your Azure Web App publish settings, but sensitive information contained
-# in these scripts will be unencrypted
-PublishScripts/
-
 # NuGet Packages
 *.nupkg
 # The packages folder can be ignored because of Package Restore
@@ -161,9 +148,6 @@ PublishScripts/
 !**/packages/build/
 # Uncomment if necessary however generally it will be regenerated when needed
 #!**/packages/repositories.config
-# NuGet v3's project.json files produces more ignoreable files
-*.nuget.props
-*.nuget.targets
 
 # Microsoft Azure Build Output
 csx/
@@ -173,11 +157,12 @@ csx/
 ecf/
 rcf/
 
-# Windows Store app package directories and files
+# Microsoft Azure ApplicationInsights config file
+ApplicationInsights.config
+
+# Windows Store app package directory
 AppPackages/
 BundleArtifacts/
-Package.StoreAssociation.xml
-_pkginfo.txt
 
 # Visual Studio cache files
 # files ending in .cache can be ignored
@@ -191,13 +176,11 @@ ClientBin/
 *~
 *.dbmdl
 *.dbproj.schemaview
+*.pfx
 *.publishsettings
-node_modules/
 orleans.codegen.cs
 
-# Since there are multiple workflows, uncomment next line to ignore bower_components
-# (https://github.com/github/gitignore/pull/1529#issuecomment-104372622)
-#bower_components/
+/node_modules
 
 # RIA/Silverlight projects
 Generated_Code/
@@ -244,25 +227,31 @@ _Pvt_Extensions
 
 # Paket dependency manager
 .paket/paket.exe
-paket-files/
 
 # FAKE - F# Make
 .fake/
-
-# # JetBrains Rider
-# .idea/
-# *.sln.iml
-# pub/
-# /src/Web/WebMVC/Properties/PublishProfiles/eShopOnContainersWebMVC2016 - Web Deploy-publish.ps1
-# /src/Web/WebMVC/Properties/PublishProfiles/publish-module.psm1
-# /src/Services/Identity/eShopOnContainers.Identity/Properties/launchSettings.json
-
-# #Ignore marker-file used to know which docker files we have.
-# .eshopdocker_*
-# /src/Web/WebMVC/wwwroot/lib
-# /src/Web/WebMVC/wwwroot/css/site.min.css
-# **/.kube/**
-# .mfractor
 .DS_Store
 # Avoid commit AWS Cred
 **/*.env
+
+# See https://help.github.com/ignore-files/ for more about ignoring files.
+
+# dependencies
+**/node_modules
+
+# testing
+/coverage
+
+# production
+/build
+
+# misc
+.DS_Store
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*

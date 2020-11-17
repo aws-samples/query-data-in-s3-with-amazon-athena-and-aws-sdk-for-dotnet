@@ -32,8 +32,8 @@ namespace AthenaNetCore.BusinessLogic.Repositories
 {
     public class HospitalRepository : BaseRepository, IHospitalRepository
     {
-
-        private const string QUERY_HOSPITALS_MOST_AFFECTED = "SELECT * FROM  \"covid-19\".\"hospital_beds\" ORDER BY potential_increase_in_bed_capac LIMIT 500;";
+        const string quote = "\"";
+        private readonly string QUERY_HOSPITALS_MOST_AFFECTED = $"SELECT * FROM  {quote}covid-19{quote}.{quote}hospital_beds{quote} ORDER BY potential_increase_in_bed_capac LIMIT 500;";
 
         public Task<IEnumerable<HospitalBeds>> HospitalsBedsWaitResultAsync()
         {
