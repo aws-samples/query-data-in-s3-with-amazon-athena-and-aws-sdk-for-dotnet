@@ -5,9 +5,9 @@ VisualStudioVersion = 16.0.30611.23
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AthenaNetCore.BusinessLogic", "AthenaNetCore.BusinessLogic\AthenaNetCore.BusinessLogic.csproj", "{7428B3E2-DE5E-49CB-BE29-B285E58CE96F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AthenaNetCore.BusinessLogicTests", "AthenaNetCore.BusinessLogicTests\AthenaNetCore.BusinessLogicTests.csproj", "{29500158-72EA-4C27-AF4E-D35685B07F7E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AthenaNetCore.BusinessLogicIntegrationTests", "AthenaNetCore.BusinessLogicTests\AthenaNetCore.BusinessLogicIntegrationTests.csproj", "{29500158-72EA-4C27-AF4E-D35685B07F7E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AthenaNetCore.WebApp", "AthenaNetCore.WebApp\AthenaNetCore.WebApp.csproj", "{0623060E-C356-4B85-A891-0BB9B8359C7B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AthenaNetCore.WebApp", "AthenaNetCore.WebApp\AthenaNetCore.WebApp.csproj", "{0623060E-C356-4B85-A891-0BB9B8359C7B}"
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{7CE7FA35-9719-46C4-94C4-7ADDF1423514}"
 EndProject

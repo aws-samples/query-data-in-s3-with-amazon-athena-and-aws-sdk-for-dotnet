@@ -169,7 +169,7 @@ namespace AthenaNetCore.WebApp.Controllers
         [HttpGet("testing/run/result/{queryId}")]
         public Task<IEnumerable<CovidTestingStatesDaily>> TestingResult(string queryId)
         {
-            return TestingRepository.GetTestingQueryResult(queryId);
+            return TestingRepository.GetTestingQueryResultAsync(queryId);
         }
 
     }

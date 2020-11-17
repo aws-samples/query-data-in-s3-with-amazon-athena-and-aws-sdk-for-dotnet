@@ -32,7 +32,7 @@ namespace AthenaNetCore.BusinessLogic.Repositories
         /// </summary>
         /// <param name="queryId"></param>
         /// <returns></returns>
-        Task<IEnumerable<CovidTestingStatesDaily>> GetTestingQueryResult(string queryId);
+        Task<IEnumerable<CovidTestingStatesDaily>> GetTestingQueryResultAsync(string queryId);
 
         /// <summary>
         /// Provide last 100 days records of COVID-19 status and testing progress in by State

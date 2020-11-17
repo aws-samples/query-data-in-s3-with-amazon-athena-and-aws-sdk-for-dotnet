@@ -23,12 +23,12 @@ using System.Text;
 using AthenaNetCore.BusinessLogic.Entities;
 using System.Linq;
 
-namespace AthenaNetCore.BusinessLogic.Repositories.Tests
+namespace AthenaNetCore.BusinessLogicIntegrationTests.Repositories.Tests
 {
     public class CovidTestingRepositoryTests
     {
         [Fact()]
-        public async void SatesTestingProgressAsyncTest()
+        public async void Test_Yesterday_Covid_Progress_In_USA()
         {
             string result;
             var filterDate = DateTime.Now.AddDays(-1);
@@ -37,14 +37,11 @@ namespace AthenaNetCore.BusinessLogic.Repositories.Tests
                 result = await repo.ProgressAsync(filterDate);
             }
 
-
             Assert.NotNull(result);
-            Assert.True(Guid.TryParse(result, out Guid queryId), "It's not a valid Athena Query Execution Id");
-            Assert.NotEqual(Guid.Empty, queryId);
         }
 
         [Fact()]
-        public async void ProgressAsyncTest()
+        public async void Test_Last_500_Covid_Records()
         {
             IEnumerable<CovidTestingStatesDaily> result;
             using (ICovidTestingRepository repo = new CovidTestingRepository())
@@ -57,7 +54,7 @@ namespace AthenaNetCore.BusinessLogic.Repositories.Tests
         }
 
         [Fact()]
-        public async void PorgressByStateAsyncTest()
+        public async void Test_Covid_Progress_by_State()
         {
             string result;
             var filterState = "CA";
@@ -67,8 +64,6 @@ namespace AthenaNetCore.BusinessLogic.Repositories.Tests
             }
 
             Assert.NotNull(result);
-            Assert.True(Guid.TryParse(result, out Guid queryId), "It's not a valid Athena Query Execution Id");
-            Assert.NotEqual(Guid.Empty, queryId);
         }
     }
 }
