@@ -23,7 +23,6 @@ namespace AthenaNetCore.BusinessLogic.Entities
 {
     public class CovidTestingStatesDaily
     {
-
         /// <summary>
         /// reporting date
         /// </summary>
@@ -74,21 +73,25 @@ namespace AthenaNetCore.BusinessLogic.Entities
         /// <summary>
         /// increase in deaths vs previous day
         /// </summary>
-        public double Deathincrease { get; set; }
+        [AthenaColumn("deathincrease")]
+        public double DeathIncrease { get; set; }
 
         /// <summary>
         /// increase in hospitalized patients vs previous day
         /// </summary>
-        public double Hospitalizedincrease { get; set; }
+        [AthenaColumn("hospitalizedincrease")]
+        public double HospitalizedIncrease { get; set; }
 
         /// <summary>
         /// increase in negative cases vs previous day
         /// </summary>
-        public double Negativeincrease { get; set; }
+        [AthenaColumn("negativeincrease")]
+        public double NegativeIncrease { get; set; }
 
         /// <summary>
         /// increase in positive cases vs previous day
         /// </summary>
-        public double Positiveincrease { get; set; }
+        [AthenaColumn("positiveincrease")]
+        public double PositiveIncrease { get; set; }
     }
 }

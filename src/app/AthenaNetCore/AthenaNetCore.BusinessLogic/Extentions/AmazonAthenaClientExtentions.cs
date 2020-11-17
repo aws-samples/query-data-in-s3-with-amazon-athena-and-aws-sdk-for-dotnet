@@ -19,7 +19,6 @@ using Amazon.Athena;
 using Amazon.Athena.Model;
 using AthenaNetCore.BusinessLogic.Entities;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -27,10 +26,10 @@ using System.Threading.Tasks;
 
 namespace AthenaNetCore.BusinessLogic.Extentions
 {
-    internal static class AmazonAthenaClientExtention
+    internal static class AmazonAthenaClientExtentions
     {
         private const int SLEEP_AMOUNT_IN_MS = 1000;
-        private static readonly string S3_RESULT_BUCKET_NAME = Environment.GetEnvironmentVariable("S3_RESULT_BUCKET_NAME") ?? "YOUR_S3_BUCKET_FOR_THE_ATHENA_RESULT";
+        private static readonly string S3_RESULT_BUCKET_NAME = Environment.GetEnvironmentVariable("S3_RESULT_BUCKET_NAME") ?? "s3://athena-results-netcore-s3bucket-fk6joy3h5yof/athena/results/";
 
         /// <summary>
         /// Execute an SQL query using Amazon Athena, wait for the result of the query 
@@ -60,7 +59,7 @@ namespace AthenaNetCore.BusinessLogic.Extentions
                 }
             });
 
-            await WaitForQueryToComplete(athenaClient, qry.QueryExecutionId, DateTime.Now.AddMinutes(timeoutInMinutes));
+            await WaitForQueryToComplete(athenaClient, qry.QueryExecutionId, timeoutInMinutes);
 
             return await ProcessQueryResultsAsync<T>(athenaClient, qry.QueryExecutionId);
         }
@@ -145,11 +144,11 @@ namespace AthenaNetCore.BusinessLogic.Extentions
             var queryState = getQueryExecutionResponse.QueryExecution.Status.State;
             if (queryState == QueryExecutionState.FAILED)
             {
-                throw new Exception("Query Failed to run with Error Message: " + getQueryExecutionResponse.QueryExecution.Status.StateChangeReason);
+                throw new AmazonAthenaException("Query Failed to run with Error Message: " + getQueryExecutionResponse.QueryExecution.Status.StateChangeReason);
             }
             else if (queryState == QueryExecutionState.CANCELLED)
             {
-                throw new Exception("Query was cancelled.");
+                throw new AmazonAthenaException("Query was cancelled.");
             }
             else if (queryState == QueryExecutionState.SUCCEEDED)
             {
@@ -167,10 +166,12 @@ namespace AthenaNetCore.BusinessLogic.Extentions
         /// <param name="queryExecutionId">Eexecution Id to track the query progress</param>
         /// <param name="timeout">max DateTime to wait before abort</param>
         /// <returns></returns>
-        private static async Task WaitForQueryToComplete(IAmazonAthena athenaClient, string queryExecutionId, DateTime timeout)
+        private static async Task WaitForQueryToComplete(IAmazonAthena athenaClient, string queryExecutionId, int timeout)
         {
             bool isQueryStillRunning = true;
-            while (isQueryStillRunning && DateTime.Now <= timeout)
+            DateTimeOffset endTimeOffset = DateTimeOffset.Now.AddMinutes(timeout);
+
+            while (isQueryStillRunning && DateTimeOffset.Now <= endTimeOffset)
             {
                 isQueryStillRunning = await athenaClient.IsTheQueryStillRunning(queryExecutionId);
                 if (isQueryStillRunning)
@@ -180,7 +181,7 @@ namespace AthenaNetCore.BusinessLogic.Extentions
                 }
             }
 
-            if (isQueryStillRunning && DateTime.Now > timeout)
+            if (isQueryStillRunning && DateTimeOffset.Now > endTimeOffset)
             {
                 throw new AmazonAthenaException("Timeout: Amazon Athena still processing your query, use the RequestId to get the result later.")
                 {
@@ -234,7 +235,7 @@ namespace AthenaNetCore.BusinessLogic.Extentions
             foreach (var prop in entityItem.GetType().GetProperties())
             {
                 var propColumnName = prop.Name.ToLower();
-                var att = System.Attribute.GetCustomAttribute(prop, typeof(AthenaColumnAttribute));
+                var att = prop.GetCustomAttributes(typeof(AthenaColumnAttribute), false)?.FirstOrDefault();
                 if (att is AthenaColumnAttribute attribute)
                 {
                     propColumnName = attribute.ColumnName;

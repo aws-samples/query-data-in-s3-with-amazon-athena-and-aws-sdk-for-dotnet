@@ -23,20 +23,21 @@ using System.Text;
 using System.Linq;
 using AthenaNetCore.BusinessLogic.Entities;
 
-namespace AthenaNetCore.BusinessLogic.Repositories.Tests
+namespace AthenaNetCore.BusinessLogicIntegrationTests.Repositories.Tests
 {
     public class HospitalRepositoryTests
     {
         [Fact()]
-        public async void CountCaseTest()
+        public async void Test_List_Covid_Hospitals_Beds_Availability()
         {
             IEnumerable<HospitalBeds> result;
+            
             using (var repo = new HospitalRepository())
             {
                 result = await repo.HospitalsBedsWaitResultAsync();
             }
 
-            Assert.Equal(500, result.Count());
+            Assert.True(result.Any());
         }
     }
 }

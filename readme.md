@@ -1,17 +1,17 @@
 # How to use SQL to query data in S3 Bucket with Amazon Athena and AWS SDK for .NET
 
 This Project provides a sample implementation that will show how to leverage [Amazon Athena](https://aws.amazon.com/athena/) from .NET Core Application using [AWS SDK for .NET](https://docs.aws.amazon.com/sdk-for-net/v3/developer-guide/welcome.html) to run standard SQL to analyze a large amount of data in [Amazon S3](https://aws.amazon.com/s3/).
-To showcase a more realistic use-case, it includes a WebApp UI developed using [ReactJs](https://reactjs.org/). this WebApp contains components to demonstrate fetching COVID-19 data from API Server that uses AWS SDK for .NET to connect to Amazon Athena and run SQL Standard query from datasets on Amazon S3 files from a Data Lake account. This Data Lake account is an open data available on [Registry of Open Data on AWS](https://registry.opendata.aws/); here's the link to the Data Lake <https://registry.opendata.aws/aws-covid19-lake/>.
+To showcase a more realistic use-case, it includes a WebApp UI developed using [ReactJs](https://reactjs.org/). this WebApp contains components to demonstrate fetching COVID-19 data from API Server that uses AWS SDK for .NET to connect to Amazon Athena and run SQL Standard query from datasets on Amazon S3 files from a Data Lake account. This Data Lake account is the [aws-covid19-lake](https://registry.opendata.aws/aws-covid19-lake/) account, made available on [Registry of Open Data on AWS](https://registry.opendata.aws/)
 
-Those ReatJs Components call .NET Core API that runs Amazon Athena Query, get QueryExecutionId, check the execution status, and list results. Each menu presents different views.
+Those ReatJs Components call .NET Core API that runs Amazon Athena Query, check the execution status, and list results. Each menu presents different views.
 
-**Menu option _Testing By Date_**: Shows a filter by Date that present a table with the following data: Date, State, Positive, Negative, Pending, Hospitalized, Death, Positive Increase
+**Menu option _Testing By Date_**: Shows a filter by Date that presents a table with the following data: Date, State, Positive, Negative, Pending, Hospitalized, Death, Positive Increase
 
-**Menu option _Testing By State_**: Shows a filter by State that present a table with the following data: Date, State, Positive, Negative, Pending, Hospitalized, Death Positive Increase
+**Menu option _Testing By State_**: Shows a filter by State that presents a table with the following data: Date, State, Positive, Negative, Pending, Hospitalized, Death Positive Increase
 
 **Menu option _Hospitals (Run&Go)_**: Run a request to the API server, get 200 with the Query ID, check the status of the execution; when the execution it's completed, it presents a table with the following data: Name, State, Type, ZipCode, Licenced Beds, Staffed Beds, Potential Increase in Beds
 
-**Menu option _Hospitals (Run&Go)_**: Run request to the API server, wait for the result and present a table with the following data: Name, State, Type, Zip Code, Licenced Beds, Staffed Beds, Potential Increase in Beds
+**Menu option _Hospitals (Run&Go)_**: Run request to the API server, wait for the result and presents a table with the following data: Name, State, Type, Zip Code, Licenced Beds, Staffed Beds, Potential Increase in Beds
 
 # Steps
 
@@ -96,21 +96,22 @@ Below the result of status check, wait for **"StackStatus": "CREATE_COMPLETE"** 
 
 ## 3) COVID-19 Analisys (optional)
 
-Some SQL Query you can try by your own using Amazon Athena UI
+Some SQL Query that you can try on your own using [Amazon Athena Console UI]((https://us-west-2.console.aws.amazon.com/athena/home?region=us-west-2#query/)). This step is optional for this demo, but it helps you explore and learn more about Amazon Athena using Console UI
 
 ```sql
-SELECT
-  cases.fips,
-  admin2 as county,
-  province_state,
+-- The following query returns the growth of confirmed cases for the past 7 days joined side-by-side with hospital bed availability, broken down by US county:
+SELECT 
+  cases.fips, 
+  admin2 as county, 
+  province_state, 
   confirmed,
-  growth_count,
-  sum(num_licensed_beds) as num_licensed_beds,
-  sum(num_staffed_beds) as num_staffed_beds,
+  growth_count, 
+  sum(num_licensed_beds) as num_licensed_beds, 
+  sum(num_staffed_beds) as num_staffed_beds, 
   sum(num_icu_beds) as num_icu_beds
 FROM 
-  "covid-19"."hospital_beds" beds,
-  ( SELECT
+  "covid-19"."hospital_beds" beds, 
+  ( SELECT 
       fips, 
       admin2, 
       province_state, 
@@ -119,7 +120,7 @@ FROM
       first_value(last_update) over (partition by fips order by last_update desc) as most_recent,
       last_update
     FROM  
-      'covid-19'.'enigma_jhu' 
+      "covid-19"."enigma_jhu" 
     WHERE 
       from_iso8601_timestamp(last_update) > now() - interval '200' day AND country_region = 'US') cases
 WHERE 
@@ -127,12 +128,10 @@ WHERE
 GROUP BY cases.fips, confirmed, growth_count, admin2, province_state
 ORDER BY growth_count desc
 
---Testing and deaths
+--Last 10 records regarding Testing and deaths
 SELECT * FROM "covid-19"."world_cases_deaths_testing" order by "date" desc limit 10;
 
-SELECT * FROM "covid-19"."nytimes_counties" order by "date" desc limit 10;
-
--- Testing
+-- Last 10 records regarding Testing and deaths with JOIN on us_state_abbreviations to list State name
 SELECT 
    date,
    positive,
@@ -151,9 +150,6 @@ SELECT
 FROM "covid-19"."covid_testing_states_daily" sta
 JOIN "covid-19"."us_state_abbreviations" abb ON sta.state = abb.abbreviation
 limit 500;
-
-SELECT * FROM "covid-19"."covid_testing_us_daily"  order by "date" desc limit 10;
-
 ```
 
 ## 4) Build & Run .NET Web Application

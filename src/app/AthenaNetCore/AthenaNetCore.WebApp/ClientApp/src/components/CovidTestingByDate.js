@@ -76,7 +76,7 @@ export class CovidTestingByDate extends Component {
                             <td>{item.pending}</td>
                             <td>{item.hospitalized}</td>
                             <td>{item.death}</td>
-                            <td>{item.positiveincrease}</td>
+                            <td>{item.positiveIncrease}</td>
                         </tr>
                     )}
                 </tbody>

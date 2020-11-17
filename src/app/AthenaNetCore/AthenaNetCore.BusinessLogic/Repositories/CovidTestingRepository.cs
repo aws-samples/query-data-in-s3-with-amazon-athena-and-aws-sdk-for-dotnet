@@ -91,7 +91,7 @@ namespace AthenaNetCore.BusinessLogic.Repositories
             return AmazonAthenaClient.QueryAndGoAsync(queryString);
         }
 
-        public Task<IEnumerable<CovidTestingStatesDaily>> GetTestingQueryResult(string queryId)
+        public Task<IEnumerable<CovidTestingStatesDaily>> GetTestingQueryResultAsync(string queryId)
         {
             if (string.IsNullOrWhiteSpace(queryId)) return default;
 

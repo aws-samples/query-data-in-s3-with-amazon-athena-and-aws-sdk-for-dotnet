@@ -30,19 +30,19 @@ namespace AthenaNetCore.BusinessLogic.Entities
         public string HospitalType { get; set; }
 
         [AthenaColumn("hq_address")]
-        public string HqAddress { get; set; }
+        public string HQAddress { get; set; }
 
         [AthenaColumn("hq_address1")]
-        public string HqAddress1 { get; set; }
+        public string HQAddress1 { get; set; }
         
         [AthenaColumn("hq_city")]
-        public string HqCity { get; set; }
+        public string HQCity { get; set; }
 
         [AthenaColumn("hq_state")]
-        public string HqState { get; set; }
+        public string HQState { get; set; }
 
         [AthenaColumn("hq_zip_code")]
-        public string HqZipCode { get; set; }
+        public string HQZipCode { get; set; }
 
         [AthenaColumn("county_name")]
         public string CountyName { get; set; }
@@ -54,7 +54,7 @@ namespace AthenaNetCore.BusinessLogic.Entities
         public string StateFips { get; set; }
 
         [AthenaColumn("num_licensed_beds")]
-        public int LicencedBeds { get; set; }
+        public int LicensedBeds { get; set; }
 
         [AthenaColumn("num_staffed_beds")]
         public int StaffedBeds { get; set; }
@@ -63,7 +63,7 @@ namespace AthenaNetCore.BusinessLogic.Entities
         public int IcuBeds { get; set; }
 
         [AthenaColumn("potential_increase_in_bed_capac")]
-        public int PotentialIncreaseInBedCapac { get; set; }
+        public int PotentialIncreaseInBedCapacity { get; set; }
 
         //[AthenaColumn("latitude")]
         public double Latitude { get; set; }
