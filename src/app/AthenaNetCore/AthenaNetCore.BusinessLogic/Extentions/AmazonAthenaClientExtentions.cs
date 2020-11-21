@@ -112,8 +112,6 @@ namespace AthenaNetCore.BusinessLogic.Extentions
                 var rows = getQueryResultsResults.ResultSet.Rows;
                 var columnPositionMap = MapColumnsPositions(rows[0].Data, columnInfoList);
                 rows.RemoveAt(0);
-                //Debug.WriteLine(string.Join(" | ", columnsPosition.Data.Select(s => s.VarCharValue)));
-                //Debug.WriteLine(string.Join(" | ", columnInfoList.Select(s => s.Type)));
 
                 foreach (var row in rows)
                 {
@@ -124,6 +122,7 @@ namespace AthenaNetCore.BusinessLogic.Extentions
             catch (AmazonAthenaException e)
             {
                 Debug.WriteLine(e);
+                throw;
             }
 
             return results;
