@@ -32,7 +32,7 @@ namespace AthenaNetCore.WebApp.Controllers
     [Route("[controller]")]
     public class CovidTrackingController : Controller
     {
-        const string ERROR_MSG = "Ops... It was not possible to run this query, please check server log ref";
+        const string ERROR_MSG = "Oops... It was not possible to run this query, please check server log ref";
         private readonly ILogger<CovidTrackingController> _logger;
 
         public CovidTrackingController(ICovidTestingRepository testingRepository,
@@ -74,7 +74,6 @@ namespace AthenaNetCore.WebApp.Controllers
                 _logger.LogError(ex, msg);
                 return BadRequest(new AppErrorModel
                 {
-                    Code = "000",
                     ErrorMessage = msg
                 });
             }
@@ -107,7 +106,6 @@ namespace AthenaNetCore.WebApp.Controllers
                 _logger.LogError(ex, msg);
                 return BadRequest(new AppErrorModel
                 {
-                    Code = "000",
                     ErrorMessage = msg
                 });
             }
@@ -134,7 +132,6 @@ namespace AthenaNetCore.WebApp.Controllers
                 _logger.LogError(ex, msg);
                 return BadRequest(new AppErrorModel
                 {
-                    Code = "000",
                     ErrorMessage = msg
                 });
             }
@@ -160,7 +157,6 @@ namespace AthenaNetCore.WebApp.Controllers
                 _logger.LogError(ex, msg);
                 return BadRequest(new AppErrorModel
                 {
-                    Code = "000",
                     ErrorMessage = msg
                 });
             }
