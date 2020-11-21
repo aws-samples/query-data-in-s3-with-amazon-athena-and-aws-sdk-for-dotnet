@@ -9,7 +9,7 @@ export class HospitalsRunAndGo extends Component {
             isLoading: true,
             isCheckingStatus: false,
             statusData: {
-                atempt: 0,
+                attempt: 0,
                 queryId: ""
             }
         };
@@ -21,7 +21,7 @@ export class HospitalsRunAndGo extends Component {
 
     renderHospitalsTable(hospitals) {
         return (
-            <table className='table table-striped' aria-labelledby="tabelLabel">
+            <table className='table table-striped' aria-labelledby="tableLabel">
                 <thead>
                     <tr>
                         <th>Name</th>
@@ -52,18 +52,21 @@ export class HospitalsRunAndGo extends Component {
 
     renderStatusCheck(statusData) {
         return (
-            <p><em>Running query ID: {statusData.queryId}, Atemp: {statusData.atempt}</em></p>
+            <p><em>Running query ID: {statusData.queryId}, Atemp: {statusData.attempt}</em></p>
         );
     }
 
     render() {
-        let contents = this.state.isLoading
-            ? (this.state.isCheckingStatus ? this.renderStatusCheck(this.state.statusData) : <p><em>Loading...</em></p>)
-            : this.renderHospitalsTable(this.state.hospitals);
+        let contents = ""
+        if (this.state.isLoading) {
+            contents = (this.state.isCheckingStatus ? this.renderStatusCheck(this.state.statusData) : <p><em>Loading...</em></p>);
+        } else {
+            contents = this.renderHospitalsTable(this.state.hospitals);
+        }
 
         return (
             <div>
-                <h1 id="tabelLabel" >Hospitals Beds avaliability</h1>
+                <h1 id="tableLabel" >Hospitals Beds avaliability</h1>
                 <p>This component demonstrates fetching COVID-19 data from the server that uses Amazon Athena to run SQL Standard query on S3 files from a Data Lake account. This Request run Athena Query and Wait for Results</p>
                 {contents}
             </div>
@@ -80,13 +83,13 @@ export class HospitalsRunAndGo extends Component {
                 isLoading: true,
                 statusData: {
                     queryId: queryId,
-                    atempt: this.state.statusData.atempt + 1
+                    attempt: this.state.statusData.attempt + 1
                 }
             });
             this.scheduleStatusCheck(queryId);
         } else {
             clearInterval(this.timer);
-            await this.loadResult(queryId);
+            this.loadResult(queryId);
         }
     }
 
@@ -103,9 +106,9 @@ export class HospitalsRunAndGo extends Component {
             isCheckingStatus: true,
             statusData: {
                 queryId: dataResult.queryId,
-                atempt: this.state.statusData.atempt + 1
+                attempt: this.state.statusData.attempt + 1
             }});
-        await this.scheduleStatusCheck(dataResult.queryId);
+        this.scheduleStatusCheck(dataResult.queryId);
     }
 
     scheduleStatusCheck(queryId) {
