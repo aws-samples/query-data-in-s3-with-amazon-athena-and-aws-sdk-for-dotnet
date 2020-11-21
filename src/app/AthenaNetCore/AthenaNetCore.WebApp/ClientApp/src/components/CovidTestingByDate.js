@@ -16,7 +16,6 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 import React, { Component } from 'react'
-import data from '../data/states.json'
 
 export class CovidTestingByDate extends Component {
 
@@ -41,7 +40,6 @@ export class CovidTestingByDate extends Component {
 
     stateSelectChange(event) {
         const selectedDate = event.target.value;
-        //console.log(selectedState);
         if (selectedDate !== "") {
             this.setState({ isLoading: true });
             this.loadCovidData(selectedDate);

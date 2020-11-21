@@ -33,7 +33,7 @@ namespace AthenaNetCore.BusinessLogic.Repositories
             // to learn more check: https://docs.aws.amazon.com/sdk-for-net/v3/developer-guide/net-dg-config-creds.html
             AmazonAthenaClient = new AmazonAthenaClient(RegionEndpoint.USWest2);
 
-            //Option 1: Hardcode
+            //Option 2: Hardcode
             //Uncomment if you prefer hardcode your Access key and Secret access instead of using the environment variable
             //AmazonAthenaClient = new AmazonAthenaClient("YOUR_AWS_ACCESS_KEY", "YOUR_AWS_SECRET_ACCESS", RegionEndpoint.USWest2);
         }
@@ -49,10 +49,7 @@ namespace AthenaNetCore.BusinessLogic.Repositories
         /// </summary>
         public void Dispose()
         {
-            if (AmazonAthenaClient != null)
-            {
-                AmazonAthenaClient.Dispose();
-            }
+            AmazonAthenaClient?.Dispose();
         }
 
         public Task<bool> IsTheQueryStillRunning(string queryId)
