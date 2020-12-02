@@ -9,9 +9,9 @@ Those ReatJs Components call .NET Core API that runs Amazon Athena Query, check 
 
 **Menu option _Testing By State_**: Shows a filter by State that presents a table with the following data: Date, State, Positive, Negative, Pending, Hospitalized, Death Positive Increase
 
-**Menu option _Hospitals (Run&Go)_**: Run a request to the API server, get 200 with the Query ID, check the status of the execution; when the execution it's completed, it presents a table with the following data: Name, State, Type, ZipCode, Licenced Beds, Staffed Beds, Potential Increase in Beds
+**Menu option _Hospitals (Run&Go)_**: Run a request to the API server, get 200 with the Query ID, check the status of the execution; when the execution it's completed, it presents a table with the following data: Name, State, Type, ZipCode, Licensed Beds, Staffed Beds, Potential Increase in Beds
 
-**Menu option _Hospitals (Run&Go)_**: Run request to the API server, wait for the result and presents a table with the following data: Name, State, Type, Zip Code, Licenced Beds, Staffed Beds, Potential Increase in Beds
+**Menu option _Hospitals (Run&Go)_**: Run request to the API server, wait for the result and presents a table with the following data: Name, State, Type, Zip Code, Licensed Beds, Staffed Beds, Potential Increase in Beds
 
 # Steps
 
