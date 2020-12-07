@@ -1,0 +1,12 @@
+version: '3.4'
+
+services:
+  athenanetcore.webapp:
+    image: athena-netcore-webapp
+    build:
+      context: .
+      dockerfile: AthenaNetCore.WebApp/Dockerfile
+    ports:
+      - "8089:80"
+    env_file:
+    - aws-credentials-do-not-commit.env
