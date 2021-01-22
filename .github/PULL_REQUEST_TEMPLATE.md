@@ -17,3 +17,4 @@
 - [ ] Fixes bug
 - [ ] Refactors code
 - [ ] Adds test(s)
+- [ ] Vulnerability
