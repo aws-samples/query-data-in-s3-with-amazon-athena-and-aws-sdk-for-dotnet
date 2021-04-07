@@ -54,7 +54,7 @@ Below the result of status check, wait for **"StackStatus": "CREATE_COMPLETE"**
 
 ```bash
 #1) Deploy S3 Bucket
-aws cloudformation create-stack --stack-name athena-results-netcore --template-body file://s3-athena-result.template.yaml --region us-west-2
+aws cloudformation deploy --stack-name athena-results-netcore --template-file ./src/cloud-formation-templates/s3-athena-result.template.yaml --region us-west-2
 
 #2) Check deployment Status
 aws cloudformation  describe-stacks --stack-name athena-results-netcore --region us-west-2
@@ -163,7 +163,7 @@ cd ./src/app/AthenaNetCore/
 2) Create AWS Credential file, **_for security precaution the file extension *.env is added to .gitignore to avoid accidental commit_**
 
 ```bash
-vi aws-credentials-do-not-commit.env #You can use any text editor eg: vscode -> code aws-credentials-do-not-commit.env
+code aws-credentials-do-not-commit.env #You can use any text editor eg: vi -> vi aws-credentials-do-not-commit.env
 ```
 
 Below example of env file content, replace the XXXX... with your real AWS Credential, and add to S3_RESULT the output result you got from steep 2)
@@ -173,7 +173,7 @@ AWS_DEFAULT_REGION=us-west-2
 AWS_ACCESS_KEY_ID=XXXXXXXXXXXXXXXXXXXX
 AWS_SECRET_ACCESS_KEY=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 AWS_SESSION_TOKEN=XXXXX #(Optional, used only in case of temporary token, you'll need to remove this comment on the .env file)
-S3_RESULT_BUCKET_NAME=s3://athena-results-netcore-s3bucket-xxxxxxxxxxxx/athena/results/
+S3_RESULT_BUCKET_NAME=s3://athena-results-netcore-s3bucket-xxxxxxxxxxxx/athena/results/ #paste the bucket name you've copied on the step 2, you'll need to remove this comment on the .env file)
 
 ```
 
@@ -191,6 +191,23 @@ docker-compose -f ./docker-compose.yml up
 
 5) Test .NET APP via URL <http://localhost:8089/>
 
+6) Clean up
+```bash
+# 1) Clean local resources
+docker-compose down -v
+
+# 2) Clean s3 objects created by Athena to store Results metadata
+ aws s3 rm --recursive s3://athena-results-netcore-s3bucket-xxxxxxxxxxxx/athena/results/
+
+# 3) Delete S3 bucket
+aws cloudformation delete-stack --stack-name athena-results-netcore --region us-west-2
+
+# 4) Delete Athena Tables
+aws cloudformation delete-stack --stack-name covid-lake-stack
+
+ 
+
+```
 # References
 
 <https://aws.amazon.com/blogs/big-data/a-public-data-lake-for-analysis-of-covid-19-data/> 
